@@ -77,9 +77,59 @@ class Tree{
         int height(Node *p);
 };
 
+void Tree::createTree(){
+    Node *p, *t;
+    int x;
+    Queue q(50);
+
+    cout<<"Enter a value for root: ";
+    cin>>x;
+
+    root = new Node;
+    root->data = x;
+    root->lchild = root->rchild = NULL;
+    q.enqueue(root);
+
+    while (!q.isEmpty()){
+        p = q.dequeue();
+
+        cout<<"Enter a value for the left child of "<<p->data<<": ";
+        cin>>x;
+
+        if(x!=-1){
+            t = new Node;
+            t->data = x;
+            t->lchild = t->rchild = NULL;
+            p->lchild = t;
+            q.enqueue(t);
+        }
+
+        cout<<"Enter a value for the right child of "<<p->data<<": ";
+        cin>>x;
+
+        if(x!=-1){
+            t = new Node;
+            t->data = x;
+            t->lchild = t->rchild = NULL;
+            p->rchild = t;
+            q.enqueue(t);
+        }
+    }
+}
+
+void Tree::preOrder(Node *p){
+    if(p){
+        cout<<p->data<<" ";
+        preOrder(p->lchild);
+        preOrder(p->rchild);
+    }
+}
+
 int main(){
-    
-    cout<<"Hello";
-    cout<<"GG NO RE";
+    Tree t;
+
+    t.createTree();
+    t.preOrder(t.root);
+
     return 0;
 }
