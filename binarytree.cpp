@@ -1,4 +1,5 @@
 #include<iostream>
+#include<climits>
 
 using namespace std;
 
@@ -74,7 +75,8 @@ class Tree{
         void postOrder(Node *p);
         void inOrder(Node *p);
         void levelOrder(Node *p);
-        int height(Node *p);
+        int maxDepth(Node *p);
+        int minDepth(Node *p);
 };
 
 void Tree::createTree(){
@@ -141,6 +143,60 @@ void Tree::inOrder(Node *p){
     }
 }
 
+void Tree::levelOrder(Node *p){
+    Queue q(50);
+    
+    cout<<root->data<<" ";
+    q.enqueue(root);
+
+    if(!q.isEmpty()){
+        p = q.dequeue();
+        
+        if(p->lchild){
+            cout<<p->lchild->data<<" ";
+            q.enqueue(p->lchild);
+        }
+
+        if(p->rchild){
+            cout<<p->rchild->data<<" ";
+            q.enqueue(p->rchild);
+        }
+    }
+}
+
+int Tree::maxDepth(Node *p){
+    int l = 0;
+    int r = 0;
+    
+    if(p==nullptr){
+        return 0;
+    }
+
+    l = maxDepth(p->lchild);
+    r = maxDepth(p->rchild);
+
+    if(l > r){
+        return l+1;
+    } else {
+        return r+1;
+    }
+}
+
+int Tree::minDepth(Node *p){
+    if (p == nullptr) {
+            return 0;
+        }
+
+    if (p->lchild == NULL && p->rchild == NULL) {
+        return 1;
+    }
+
+    int l = (p->lchild) ? minDepth(p->lchild) : INT_MAX;
+    int r = (p->rchild) ? minDepth(p->rchild) : INT_MAX;
+
+    return std::min(l, r) + 1;
+}
+
 int main(){
     Tree t;
 
@@ -158,6 +214,18 @@ int main(){
 
     cout<<"In Order: ";
     t.inOrder(t.root);
+
+    cout<<endl;
+
+    cout<<"Level Order: ";
+    t.levelOrder(t.root);
+
+    cout<<endl;
+
+    cout<<"Max depth of the tree is: "<<t.maxDepth(t.root)<<endl;
+
+    cout<<"Min depth of the tree is: "<<t.minDepth(t.root)<<endl;
+
 
 
     return 0;
