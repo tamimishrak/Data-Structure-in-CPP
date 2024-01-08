@@ -165,6 +165,7 @@ int main(){
     t.insert(8);
     t.insert(3);
     
+    //deleting value from the tree
     t.deleteValue(t.getRoot(),10);
 
     cout<<"In Order: ";

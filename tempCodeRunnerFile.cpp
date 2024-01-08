@@ -1,2 +1,0 @@
-
-            q = inorderPredecessor(p->left);
