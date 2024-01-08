@@ -20,6 +20,10 @@ class BinarySearchTree{
         void insert(int k);
         void inOrder(Node *p);
         Node* searchValue(int k); 
+        Node* deleteValue(Node *p, int k);
+        Node* inorderSuccessor(Node* p);
+        Node* inorderPredecessor(Node *p);
+        int height(Node *p);
 };
 
 void BinarySearchTree::insert(int k){
@@ -82,6 +86,73 @@ Node* BinarySearchTree::searchValue(int k){
     return nullptr;
 }
 
+int BinarySearchTree::height(Node *p){
+
+    if(p==NULL){
+        return 0;
+    }
+
+    int r = 0;
+    int l = 0;
+
+    l = height(p->left);
+    r = height(p->right);
+
+    if(l > r){
+        return l+1;
+    } else {
+        return r+1;
+    }
+}
+
+Node* BinarySearchTree::deleteValue(Node *p, int k){
+    Node *q;
+
+    if(p==nullptr){
+        return nullptr;
+    }
+
+    if(p->left==nullptr && p->right==nullptr){
+        if(p==root){
+            root = nullptr;
+        }
+        delete p;
+        return nullptr;
+    }
+
+    if(p->val > k){
+        p->left = deleteValue(p->left, k);
+    } else if(p->val < k){
+        p->right = deleteValue(p->right, k);
+    } else {
+        if(height(p->left) > height(p->right)){
+            q = inorderPredecessor(p->left);
+            p->val = q->val;
+            p->left = deleteValue(p->left, q->val);
+        } else {
+            q = inorderSuccessor(p->right);
+            p->val = q->val;
+            p->right = deleteValue(p->right, q->val);
+        }
+    }
+
+    return p;
+}
+
+Node* BinarySearchTree::inorderPredecessor(Node *p){
+    while(p && p->right!=nullptr){
+        p = p->right;
+    }
+    return p;
+}
+
+Node* BinarySearchTree::inorderSuccessor(Node *p){
+    while(p && p->left!=nullptr){
+        p = p->left;
+    }
+    return p;
+}
+
 int main(){
     BinarySearchTree t;
     
@@ -93,14 +164,18 @@ int main(){
     t.insert(20);
     t.insert(8);
     t.insert(3);
+    
+    t.deleteValue(t.getRoot(),10);
 
     cout<<"In Order: ";
     t.inOrder(t.getRoot());
 
-    Node* found = t.searchValue(2); 
+    Node* found = t.searchValue(5); 
     
     if(found!=NULL) cout<<"\nThe value is: "<<found->val;
     else cout<<"\nThe value not found";
+
+    cout<<"\nHeight of the tree is "<<t.height(t.getRoot())<<endl;
 
     return 0;
 }
