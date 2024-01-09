@@ -13,8 +13,8 @@ class Stack{
     void push(int x);
     int pop();
     int peek(int index);
-    int isFull();
-    int isEmpty();
+    bool isFull();
+    bool isEmpty();
     void display();
     int topElement();
 };
@@ -59,18 +59,18 @@ int Stack::peek(int index){
     return x;
 }
 
-int Stack::isFull() {
+bool Stack::isFull() {
     if (top == size-1){
-        return 1;
+        return true;
     }
-    return 0;
+    return false;
 }
 
-int Stack::isEmpty() {
+bool Stack::isEmpty() {
     if (top == -1){
-        return 1;
+        return true;
     }
-    return 0;
+    return false;
 }
 
 void Stack::display() {
@@ -88,6 +88,10 @@ int Stack::topElement() {
 
 int main(){
     Stack st(5);
+
+    if(st.isEmpty()){
+        cout<<"Stack is empty"<<endl;
+    }
     
     st.push(1);
     st.push(2);
@@ -96,6 +100,10 @@ int main(){
     st.push(5);
 
     st.display();
+
+     if(st.isFull()){
+        cout<<"\nQueue is full"<<endl;
+    }
 
     return 0;
 }
